@@ -19,8 +19,6 @@ def build_random_function(min_depth, max_depth):
 				 (see assignment writeup for details on the representation of
 				 these functions)
 	"""
-
-
 	if max_depth < 1:
 		return random.choice([lambda x,y,t: x, lambda x,y,t: y, lambda x,y,t: t])
 	elif min_depth < 1:
@@ -43,46 +41,6 @@ def build_random_function(min_depth, max_depth):
 	
 	return random.choice(functions)
 		
-
-def evaluate_random_function(f, x, y):
-	""" Evaluate the random function f with inputs x,y
-		Representation of the function f is defined in the assignment writeup
-
-		f: the function to evaluate
-		x: the value of x to be used to evaluate the function
-		y: the value of y to be used to evaluate the function
-		returns: the function value
-
-		>>> evaluate_random_function(["x"],-0.5, 0.75)
-		-0.5
-		>>> evaluate_random_function(["y"],0.1,0.02)
-		0.02
-		>>> evaluate_random_function(["prod",["avg",["x"],["y"]],["y"]],2.0,3)
-		7.5
-		>>> evaluate_random_function(["square"],2.0,3)
-		4.0
-		>>> evaluate_random_function(["sqrt"],4.0,3)
-		2.0
-	"""
-	if f[0] == "x":
-		return x
-	elif f[0] == "y":
-		return y
-	elif f[0] == "prod":
-		# print "prod", f[1], f[2]
-		return evaluate_random_function(f[1],x,y)*evaluate_random_function(f[2],x,y)
-	elif f[0] == "avg":
-		# print "avg", f[1], f[2]
-		return .5*(evaluate_random_function(f[1],x,y)+evaluate_random_function(f[2],x,y))
-	elif f[0] == "sin_pi":
-		return math.sin(math.pi * evaluate_random_function(f[1],x,y))
-	elif f[0] == "cos_pi":
-		return math.cos(math.pi * evaluate_random_function(f[1],x,y))
-	elif f[0] == "square":
-		return (evaluate_random_function(f[1],x,y))*evaluate_random_function(f[1],x,y)
-	elif f[0] == "sqrt":
-		return math.sqrt(abs(evaluate_random_function(f[1],x,y)))
-
 
 def remap_interval(val,
 				   input_interval_start,
@@ -113,13 +71,9 @@ def remap_interval(val,
 	"""
 	val=float(val)
 	input_length=(input_interval_end - input_interval_start)
-	#print input_length
 	val_ratio=(val- input_interval_start)/input_length
-	#print val_ratio
 	output_length=(output_interval_end - output_interval_start)
-	#print output_length
 	new_val = val_ratio*output_length + output_interval_start
-	#print new_val
 	return new_val
 	
 
@@ -226,14 +180,13 @@ def music_visualizer(file_extension, volume_precision, x_size=350, y_size=350):
 	inp.setrate(16000)
 	inp.setformat(alsaaudio.PCM_FORMAT_S16_LE)
 	inp.setperiodsize(160)
-	#generate frames
+	#generate frames - uncomment to generate a whole new set of images to pull from
 	#generate_movie(file_extension, x_size, y_size, volume_precision)
 	#pygame load list of screens to choose from
 	surface_list = []
 	for i in range(volume_precision):
 		filename=file_extension+str(i)+'.png'
 		current_image = pygame.image.load(filename)
-		#current_image.convert()
 		surface_list.append(current_image)
 	#start visualizer
 	pygame.init()
@@ -258,5 +211,5 @@ def music_visualizer(file_extension, volume_precision, x_size=350, y_size=350):
 		time.sleep(.001)
 if __name__ == '__main__':
 	import doctest
-	#generate_art("myart17.png")
+	#generate_art("myart18.png")
 	music_visualizer('frame', 50)
